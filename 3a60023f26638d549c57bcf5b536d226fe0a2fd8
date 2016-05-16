@@ -1,0 +1,4 @@
+This was supposed to be https://bugs.freedesktop.org/show_bug.cgi?id=94883
+
+But this patch wasn't supposed to get pushed at all, actually, it snuck in
+on accident when i pushed some other stuff.
