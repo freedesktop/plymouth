@@ -532,7 +532,7 @@ ply_renderer_connector_get_rotation_and_tiled (ply_renderer_backend_t      *back
         drmModePropertyPtr prop;
         uint64_t rotation;
 
-        output->rotation = PLY_PIXEL_BUFFER_ROTATE_UPRIGHT;
+        output->rotation = ply_get_device_orientation();
         output->tiled = false;
 
         for (i = 0; i < connector->count_props; i++) {

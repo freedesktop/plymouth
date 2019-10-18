@@ -81,6 +81,7 @@ static int errno_stack[PLY_ERRNO_STACK_SIZE];
 static int errno_stack_position = 0;
 
 static int overridden_device_scale = 0;
+static int overridden_device_orientation = 0;
 
 static char kernel_command_line[PLY_MAX_COMMAND_LINE_SIZE];
 static bool kernel_command_line_is_set;
@@ -851,6 +852,13 @@ ply_set_device_scale (int device_scale)
     ply_trace ("Device scale is set to %d", device_scale);
 }
 
+void
+ply_set_device_orientation (int device_orientation)
+{
+    overridden_device_orientation = device_orientation;
+    ply_trace ("Device orientation is set to %d", device_orientation);
+}
+
 /* The minimum resolution at which we turn on a device-scale of 2 */
 #define HIDPI_LIMIT 192
 #define HIDPI_MIN_HEIGHT 1200
@@ -895,6 +903,12 @@ ply_get_device_scale (uint32_t width,
         }
 
         return device_scale;
+}
+
+int
+ply_get_device_orientation (void)
+{
+        return overridden_device_orientation;
 }
 
 static const char *

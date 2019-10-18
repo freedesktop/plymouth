@@ -117,11 +117,13 @@ char *ply_get_process_command_line (pid_t pid);
 pid_t ply_get_process_parent_pid (pid_t pid);
 
 void ply_set_device_scale (int device_scale);
+void ply_set_device_orientation (int device_orientation);
 
 int ply_get_device_scale (uint32_t width,
                           uint32_t height,
                           uint32_t width_mm,
                           uint32_t height_mm);
+int ply_get_device_orientation (void);
 
 const char *ply_kernel_command_line_get_string_after_prefix (const char *prefix);
 bool ply_kernel_command_line_has_argument (const char *argument);

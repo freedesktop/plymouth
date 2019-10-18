@@ -55,6 +55,7 @@
 #include "ply-trigger.h"
 #include "ply-utils.h"
 #include "ply-progress.h"
+#include "ply-pixel-buffer.h"
 
 #define BOOT_DURATION_FILE     PLYMOUTH_TIME_DIRECTORY "/boot-duration"
 #define SHUTDOWN_DURATION_FILE PLYMOUTH_TIME_DIRECTORY "/shutdown-duration"
@@ -263,6 +264,7 @@ load_settings (state_t    *state,
         bool settings_loaded = false;
         char *scale_string = NULL;
         char *splash_string = NULL;
+        char *orientation_string = NULL;
 
         ply_trace ("Trying to load %s", path);
         key_file = ply_key_file_new (path);
@@ -310,6 +312,28 @@ load_settings (state_t    *state,
 
                         free (timeout_string);
                 }
+        }
+
+        orientation_string = ply_key_file_get_value (key_file, "Daemon", "DeviceOrientation");
+
+        if (orientation_string != NULL) {
+                int orientation = PLY_PIXEL_BUFFER_ROTATE_UPRIGHT;
+
+                if (strcmp (orientation_string, "UpsideDown") == 0)
+                        orientation = PLY_PIXEL_BUFFER_ROTATE_UPSIDE_DOWN;
+
+                if (strcmp (orientation_string, "LeftSideUp") == 0) {
+                        /* Left side up, rotate counter clockwise to correct */
+                        orientation = PLY_PIXEL_BUFFER_ROTATE_COUNTER_CLOCKWISE;
+                }
+
+                if (strcmp (orientation_string, "RightSideUp") == 0) {
+                        /* Left side up, rotate clockwise to correct */
+                        orientation = PLY_PIXEL_BUFFER_ROTATE_CLOCKWISE;
+                }
+
+                ply_set_device_orientation (orientation);
+                free (orientation_string);
         }
 
         scale_string = ply_key_file_get_value (key_file, "Daemon", "DeviceScale");
